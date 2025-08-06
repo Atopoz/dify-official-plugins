@@ -3,3 +3,5 @@ openai~=1.67.0
 tiktoken~=0.8.0
 numpy~=2.2.4
 pillow~=11.2.1
+azure-identity>=1.12.0
+azure-keyvault-secrets>=4.7.0

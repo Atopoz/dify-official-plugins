@@ -20,7 +20,7 @@ icon_large:
 icon_small:
   en_US: icon_s_en.svg
 label:
-  en_US: Azure OpenAI Service Model
+  en_US: Azure OpenAI Service Model(Key Vault)
 model_credential_schema:
   credential_form_schemas:
     - label:
@@ -33,14 +33,69 @@ model_credential_schema:
       type: text-input
       variable: openai_api_base
     - label:
+        en_US: Authentication Type
+        zh_Hans: 认证方式
+      options:
+        - label:
+            en_US: API Key
+          value: api_key
+        - label:
+            en_US: Azure Key Vault
+          value: key_vault
+        - label:
+            en_US: Managed Identity
+          value: managed_identity
+      required: false
+      type: select
+      variable: auth_type
+    - label:
         en_US: API Key
         zh_Hans: API Key
       placeholder:
         en_US: Enter your API key here
         zh_Hans: 在此输入您的 API Key
-      required: true
+      required: false
+      show_on:
+        - variable: auth_type
+          value: api_key
       type: secret-input
       variable: openai_api_key
+    - label:
+        en_US: Key Vault URL
+        zh_Hans: Key Vault URL
+      placeholder:
+        en_US: "Enter your Key Vault URL, eg: https://your-keyvault.vault.azure.net/"
+        zh_Hans: 在此输入您的Key Vault URL，如：https://your-keyvault.vault.azure.net/
+      required: false
+      show_on:
+        - variable: auth_type
+          value: key_vault
+      type: text-input
+      variable: key_vault_url
+    - label:
+        en_US: Secret Name
+        zh_Hans: 密钥名称
+      placeholder:
+        en_US: "Enter your secret name in Key Vault, default: AzureOpenAIKey"
+        zh_Hans: 在此输入您的Key Vault中存储的密钥名称，默认：AzureOpenAIKey
+      required: false
+      show_on:
+        - variable: auth_type
+          value: key_vault
+      type: text-input
+      variable: secret_name
+    - label:
+        en_US: Client ID (Optional)
+        zh_Hans: 客户端ID（可选）
+      placeholder:
+        en_US: Enter your Managed Identity Client ID (optional)
+        zh_Hans: 在此输入您的托管身份客户端ID（可选）
+      required: false
+      show_on:
+        - variable: auth_type
+          value: managed_identity
+      type: text-input
+      variable: client_id
     - label:
         en_US: API Version
         zh_Hans: API 版本

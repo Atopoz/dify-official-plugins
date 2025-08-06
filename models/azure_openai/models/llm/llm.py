@@ -111,8 +111,20 @@ class AzureOpenAILargeLanguageModel(_CommonAzureOpenAI, LargeLanguageModel):
             raise CredentialsValidateFailedError(
                 "Azure OpenAI API Base Endpoint is required"
             )
-        if "openai_api_key" not in credentials:
-            raise CredentialsValidateFailedError("Azure OpenAI API key is required")
+        
+        auth_type = credentials.get("auth_type", "api_key")
+        
+        # 验证不同认证方式所需参数
+        if auth_type == "api_key":
+            if "openai_api_key" not in credentials:
+                raise CredentialsValidateFailedError("Azure OpenAI API key is required")
+        elif auth_type == "key_vault":
+            if "key_vault_url" not in credentials:
+                raise CredentialsValidateFailedError("Azure Key Vault URL is required")
+        elif auth_type == "managed_identity":
+            # 托管身份不需要额外参数
+            pass
+            
         if "base_model_name" not in credentials:
             raise CredentialsValidateFailedError("Base Model Name is required")
         base_model_name = self._get_base_model_name(credentials)
